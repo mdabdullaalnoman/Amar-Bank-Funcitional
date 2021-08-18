@@ -11,8 +11,13 @@ function updateInputValue(totalValue, inputValue) {
     document.getElementById(totalValue).innerText = inputValue + total;
 }
 
+function currentBalance(){
+    const currentBalance = parseFloat(document.getElementById('main-balance').innerText); 
+    return currentBalance;
+};
+
 function updateBalanceL(inputValue, isAdd) {
-    const mainBalance = parseFloat(document.getElementById('main-balance').innerText);
+    const mainBalance = currentBalance();
     if (isAdd == true) {
         document.getElementById('main-balance').innerText = mainBalance + inputValue;
     } else {
@@ -21,13 +26,22 @@ function updateBalanceL(inputValue, isAdd) {
 }
 
 
-// -------------handle deposit area-------------
 
+
+
+
+
+
+
+// -------------handle deposit area-------------
 document.getElementById('deposit-btn').addEventListener('click', function () {
 
     const inputValue = getInputValue('deposit-input');
-    updateInputValue('total-deposit', inputValue);
-    updateBalanceL(inputValue);
+    if(inputValue > 0){
+        updateInputValue('total-deposit', inputValue);
+        updateBalanceL(inputValue , true);
+    }
+    
 
     //  const depositAmountText = document.getElementById('deposit-input').value;
     //  const depositAmount = parseFloat(depositAmountText);
@@ -46,12 +60,18 @@ document.getElementById('deposit-btn').addEventListener('click', function () {
 
 
 // -------------handle withdraw area-------------
-
 document.getElementById('withdraw-btn').addEventListener('click', function () {
-    
+
     const withdrawAmountValue = getInputValue('withdraw-input');
-    updateInputValue('withdraw-total', withdrawAmountValue);
-    updateBalanceL(withdrawAmountValue);
+    const currentBalances = currentBalance();
+    if(withdrawAmountValue > 0 && currentBalances > withdrawAmountValue){
+        updateInputValue('withdraw-total', withdrawAmountValue);
+        updateBalanceL(withdrawAmountValue , false);
+    }
+    if( currentBalances < withdrawAmountValue){
+        console.log(' your value is lowest form main balance');
+    }
+    
 
     // const withdrawAmountText = document.getElementById('withdraw-input').value;
     // const withdrawAmount = parseFloat(withdrawAmountText);
